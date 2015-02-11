@@ -511,6 +511,10 @@
 		return match;
 	};
 
+	pf.getBrowserWidth = function() {
+		return window.innerWidth || document.documentElement.clientWidth || 0;
+	};
+
 	function picturefill( opt ) {
 		var elements,
 			element,
@@ -520,6 +524,8 @@
 			options = opt || {};
 
 		elements = options.elements || pf.getAllElements();
+
+		w._browserWidth = pf.getBrowserWidth();
 
 		// Loop through all elements
 		for ( var i = 0, plen = elements.length; i < plen; i++ ) {
@@ -612,13 +618,13 @@
 		function checkResize() {
 			var resizeThrottle;
 
-			if ( !w._picturefillWorking ) {
+			if (!w._picturefillWorking && pf.getBrowserWidth() !== w._browserWidth) {
 				w._picturefillWorking = true;
 				w.clearTimeout( resizeThrottle );
 				resizeThrottle = w.setTimeout( function() {
 					picturefill({ reevaluate: true });
 					w._picturefillWorking = false;
-				}, 60 );
+				}, 250 );
 			}
 		}
 
