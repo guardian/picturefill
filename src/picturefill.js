@@ -209,7 +209,7 @@
 		}
 
 		//if we have no winningLength fallback to 100vw
-		return winningLength || Math.max(w.innerWidth || 0, doc.document.clientWidth);
+		return winningLength || Math.max(w.innerWidth || 0, doc.documentElement.clientWidth);
 	};
 
 	pf.parseSrcset = function( srcset ) {
