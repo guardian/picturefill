@@ -1,4 +1,4 @@
-define([ "../src/picturefill" , "fastdom" ], function(_picturefill, fastdom) {
+define([ "../src/picturefill", "fastdom" ], function(_picturefill, fastdom) {
 		_picturefill.init();
 
 		(function(window, jQuery) {
@@ -88,8 +88,10 @@ define([ "../src/picturefill" , "fastdom" ], function(_picturefill, fastdom) {
 
 				equal( imgInitialWidth.width, 10, "No natural width calculation is performed if a `width` attribute already exists." );
 
-				equal( imgWithoutDimensions.width, 90, "width attribute is set to `naturalWidth / resolution`" );
-				start();
+				fastdom.defer(2, function() {
+					equal( imgWithoutDimensions.width, 90, "width attribute is set to `naturalWidth / resolution`" );
+					start();
+				});
 			};
 
 			imgInitialHeight.src = candidate.url;
@@ -462,10 +464,10 @@ define([ "../src/picturefill" , "fastdom" ], function(_picturefill, fastdom) {
 
 			stop();
 			fastdom.defer(2, function() {
-				start();
 				deepEqual(image.src, candidates[2].url, "uses the url from the best px fit" );
 				deepEqual(image.currentSrc, candidates[2].url, "uses the url from the best px fit" );
-			})
+				start();
+			});
 
 			image.src = "data:300";
 			image.currentSrc = "data:300";
@@ -477,7 +479,7 @@ define([ "../src/picturefill" , "fastdom" ], function(_picturefill, fastdom) {
 				deepEqual(image.src, "data:300", "src left alone when matched" );
 				deepEqual(image.currentSrc, "data:300", "currentSrc left alone when matched" );
 				start();
-			})
+			});
 		});
 
 		// test( "removeVideoShim", function() {
@@ -622,7 +624,7 @@ define([ "../src/picturefill" , "fastdom" ], function(_picturefill, fastdom) {
 			picturefill( { elements: [ img ] } );
 
 			stop();
-			fastdom.defer(2, function () {
+			fastdom.defer(2, function() {
 			    assert.equal( img.currentSrc || img.src, "data:img" );
 			    start();
 			});
