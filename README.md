@@ -1,3 +1,16 @@
+*This fork is only intended to be used on The Guardian.*
+
+*If you found this by accident, you might have been looking for [@scottjehl's original](https://github.com/scottjehl/picturefill).*
+
+### Differences from the standard version
+
+- ignores resize events
+- doesn't auto-run (returns an init-type function)
+- DOM modification is passed to [fastdom](https://github.com/wilsonpage/fastdom)
+- it's a proper AMD module
+
+-
+
 # Picturefill
 A [responsive image](http://www.whatwg.org/specs/web-apps/current-work/multipage/embedded-content.html#embedded-content) polyfill.
 * Authors: Scott Jehl, Mat Marquis, Shawn Jansepar (2.0 refactor lead), and many more: see Authors.txt
