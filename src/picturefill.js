@@ -1,4 +1,4 @@
-define( "picturefill", [
+define( [
     "fastdom"
 ], function(
     fastdom
