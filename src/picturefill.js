@@ -616,30 +616,31 @@ define( "picturefill", [
 					continue;
 				}
 
-				// if `img` is in a `picture` element
-				if ( parent && parent.nodeName.toUpperCase() === "PICTURE" ) {
+				// // if `img` is in a `picture` element
+				// if ( parent && parent.nodeName.toUpperCase() === "PICTURE" ) {
 
-					// IE9 video workaround
-					pf.removeVideoShim( parent );
+				// 	// IE9 video workaround
+				// 	pf.removeVideoShim( parent );
 
-					// return the first match which might undefined
-					// returns false if there is a pending source
-					// TODO the return type here is brutal, cleanup
-					firstMatch = pf.getMatch( element, parent );
+				// 	// return the first match which might undefined
+				// 	// returns false if there is a pending source
+				// 	// TODO the return type here is brutal, cleanup
+				// 	firstMatch = pf.getMatch( element, parent );
 
-					// if any sources are pending in this picture due to async type test(s)
-					// remove the evaluated attr and skip for now ( the pending test will
-					// rerun picturefill on this element when complete)
-					if ( firstMatch === false ) {
-						continue;
-					}
-				} else {
-					firstMatch = undefined;
-				}
+				// 	// if any sources are pending in this picture due to async type test(s)
+				// 	// remove the evaluated attr and skip for now ( the pending test will
+				// 	// rerun picturefill on this element when complete)
+				// 	if ( firstMatch === false ) {
+				// 		continue;
+				// 	}
+				// } else {
+				// 	firstMatch = undefined;
+				// }
 
 				// Cache and remove `srcset` if present and we’re going to be doing `picture`/`srcset`/`sizes` polyfilling to it.
-				if ( ( parent && parent.nodeName.toUpperCase() === "PICTURE" ) ||
-				( !pf.sizesSupported && ( element.srcset && regWDesc.test( element.srcset ) ) ) ) {
+				// if ( ( parent && parent.nodeName.toUpperCase() === "PICTURE" ) ||
+				// ( !pf.sizesSupported && ( element.srcset && regWDesc.test( element.srcset ) ) ) ) {
+				if ( !pf.sizesSupported && ( element.srcset && regWDesc.test( element.srcset ) ) ) {
 					pf.dodgeSrcset( element );
 				}
 
