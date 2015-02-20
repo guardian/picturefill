@@ -1,5 +1,5 @@
 define( "picturefill", [
-    'fastdom'
+    "fastdom"
 ], function(
     fastdom
 ) {
@@ -490,12 +490,14 @@ define( "picturefill", [
 			var videos = picture.getElementsByTagName( "video" );
 			if ( videos.length ) {
 				var video = videos[ 0 ],
-					vsources = video.getElementsByTagName( "source" );
+					// vsources = video.getElementsByTagName( "source" );
+					vsources = video.getElementsByTagName( "source" ),
+					insert = function( vsource ) {
+						picture.insertBefore( vsource, video );
+					};
 				while ( vsources.length ) {
 					// picture.insertBefore( vsources[ 0 ], video );
-					fastdom.write(function() {
-						picture.insertBefore( vsources[ 0 ], video );
-					});
+					fastdom.write( insert( vsources[ 0 ] ) );
 				}
 				// Remove the video element once we're finished removing its children
 				// video.parentNode.removeChild( video );
