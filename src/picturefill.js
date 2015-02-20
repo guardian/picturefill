@@ -33,8 +33,8 @@ define( [
 			// return expose(function() {});
 			return {
 				init: function() {},
-				_: pf,
-				picturefill: picturefill
+				_: {},
+				picturefill: function() {}
 	        };
 		}
 
