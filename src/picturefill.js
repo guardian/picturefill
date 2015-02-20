@@ -366,16 +366,30 @@ define( "picturefill", [
 
 		pf.backfaceVisibilityFix = function( picImg ) {
 			// See: https://github.com/scottjehl/picturefill/issues/332
+			// var style = picImg.style || {},
+			//     WebkitBackfaceVisibility = "webkitBackfaceVisibility" in style,
+			//     currentZoom = style.zoom;
 			var style = picImg.style || {},
 				WebkitBackfaceVisibility = "webkitBackfaceVisibility" in style,
-				currentZoom = style.zoom;
+				currentZoom = style.zoom,
+				width;
 
-			if (WebkitBackfaceVisibility) {
-				style.zoom = ".999";
+			if ( WebkitBackfaceVisibility ) {
 
-				WebkitBackfaceVisibility = picImg.offsetWidth;
+				// style.zoom = ".999";
 
-				style.zoom = currentZoom;
+				// WebkitBackfaceVisibility = picImg.offsetWidth;
+
+				// style.zoom = currentZoom;
+				fastdom.read( function() {
+					width = picImg.offsetWidth;
+				});
+
+				fastdom.write( function() {
+					style.zoom = ".999";
+					WebkitBackfaceVisibility = width;
+					style.zoom = currentZoom;
+				});
 			}
 		};
 
