@@ -9,7 +9,7 @@ define( [
 	*  License: MIT/GPLv2
 	*  Spec: http://picture.responsiveimages.org/
 	*/
-	(function( w, doc, image ) {
+	return (function( w, doc, image ) {
 		// Enable strict mode
 		"use strict";
 
