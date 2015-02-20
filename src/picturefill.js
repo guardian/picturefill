@@ -396,7 +396,9 @@ define( "picturefill", [
 		pf.setIntrinsicSize = (function() {
 			var urlCache = {};
 			var setSize = function( picImg, width, res ) {
-				picImg.setAttribute( "width", parseInt(width / res, 10) );
+				fastdom.write( function() {
+					picImg.setAttribute( "width", parseInt(width / res, 10) );
+				});
 			};
 			return function( picImg, bestCandidate ) {
 				var img;
@@ -454,10 +456,16 @@ define( "picturefill", [
 							console.warn( "Blocked mixed content image " + bestCandidate.url );
 						}
 					} else {
-						picImg.src = bestCandidate.url;
-						// currentSrc attribute and property to match
-						// http://picture.responsiveimages.org/#the-img-element
-						picImg.currentSrc = picImg.src;
+						// picImg.src = bestCandidate.url;
+						// // currentSrc attribute and property to match
+						// // http://picture.responsiveimages.org/#the-img-element
+						// picImg.currentSrc = picImg.src;
+						fastdom.write(function() {
+							picImg.src = bestCandidate.url;
+							// currentSrc attribute and property to match
+							// http://picture.responsiveimages.org/#the-img-element
+							picImg.currentSrc = picImg.src;
+						});
 
 						pf.backfaceVisibilityFix( picImg );
 					}
@@ -484,10 +492,16 @@ define( "picturefill", [
 				var video = videos[ 0 ],
 					vsources = video.getElementsByTagName( "source" );
 				while ( vsources.length ) {
-					picture.insertBefore( vsources[ 0 ], video );
+					// picture.insertBefore( vsources[ 0 ], video );
+					fastdom.write(function() {
+						picture.insertBefore( vsources[ 0 ], video );
+					});
 				}
 				// Remove the video element once we're finished removing its children
-				video.parentNode.removeChild( video );
+				// video.parentNode.removeChild( video );
+				fastdom.write(function() {
+					video.parentNode.removeChild( video );
+				});
 			}
 		};
 
