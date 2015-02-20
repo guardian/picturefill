@@ -6,6 +6,29 @@
 	<link rel="stylesheet" href="resources/qunit-1.10.0.css">
 	<script src="resources/qunit-1.10.0.js"></script>
 	<script src="resources/jquery-1.7.1.js"></script>
+	<script>
+		var require = {
+		    paths: {
+		        fastdom: "resources/fastdom"
+		    }
+		}
+	</script>
+	<script src="resources/require.js"></script>
+	<!--Prevent Tests from auto starting-->
+	<script>
+        window.addEventListener("load", function onLoad() {
+            QUnit.config.autostart = false;
+
+            setTimeout( function() {
+                require([ "tests" ], function() {
+                	QUnit.load();
+                    QUnit.start();
+                });
+
+            }, 10);
+            window.removeEventListener("load", onLoad, true);
+        }, true);
+	</script>
 </head>
 <body>
 
@@ -70,8 +93,5 @@
 	</div>
 
 </div>
-
-<script src="../src/picturefill.js"></script>
-<script src="tests.js"></script>
 </body>
 </html>
