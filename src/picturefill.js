@@ -33,8 +33,8 @@ define( [
 			// return expose(function() {});
 			return {
 				init: function() {},
-				_: {},
-				picturefill: function() {}
+				_: {}, // for testing
+				picturefill: function() {} // for testing
 	        };
 		}
 
@@ -715,8 +715,8 @@ define( [
 		// expose(picturefill);
         return {
 			init: runPicturefill,
-			_: pf,
-			picturefill: picturefill
+			_: pf, // for testing
+			picturefill: picturefill // for testing
         };
 
 	} )( window, window.document, new window.Image() );
