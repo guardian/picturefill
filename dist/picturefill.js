@@ -141,46 +141,56 @@ define( [
 		 * Get width in css pixel value from a "length" value
 		 * http://dev.w3.org/csswg/css-values-3/#length-value
 		 */
-		// pf.getWidthFromLength = function( length ) {
-		// 	var cssValue;
-		// 	// If a length is specified and doesn’t contain a percentage, and it is greater than 0 or using `calc`, use it. Else, use the `100vw` default.
-		// 	length = length && length.indexOf( "%" ) > -1 === false && ( parseFloat( length ) > 0 || length.indexOf( "calc(" ) > -1 ) ? length : "100vw";
+		pf.viewportWidth = Math.max(w.innerWidth || 0, doc.documentElement.clientWidth);
+		pf.getWidthFromLength = function( length ) {
+			// var cssValue;
+			// // If a length is specified and doesn’t contain a percentage, and it is greater than 0 or using `calc`, use it. Else, use the `100vw` default.
+			// length = length && length.indexOf( "%" ) > -1 === false && ( parseFloat( length ) > 0 || length.indexOf( "calc(" ) > -1 ) ? length : "100vw";
 
-		// 	/**
-		// 	 * If length is specified in  `vw` units, use `%` instead since the div we’re measuring
-		// 	 * is injected at the top of the document.
-		// 	 *
-		// 	 * TODO: maybe we should put this behind a feature test for `vw`? The risk of doing this is possible browser inconsistancies with vw vs %
-		// 	 */
-		// 	length = length.replace( "vw", "%" );
+			// /**
+			//  * If length is specified in  `vw` units, use `%` instead since the div we’re measuring
+			//  * is injected at the top of the document.
+			//  *
+			//  * TODO: maybe we should put this behind a feature test for `vw`? The risk of doing this is possible browser inconsistancies with vw vs %
+			//  */
+			// length = length.replace( "vw", "%" );
 
-		// 	// Create a cached element for getting length value widths
-		// 	if ( !pf.lengthEl ) {
-		// 		pf.lengthEl = doc.createElement( "div" );
+			// // Create a cached element for getting length value widths
+			// if ( !pf.lengthEl ) {
+			// 	pf.lengthEl = doc.createElement( "div" );
 
-		// 		// Positioning styles help prevent padding/margin/width on `html` or `body` from throwing calculations off.
-		// 		pf.lengthEl.style.cssText = "border:0;display:block;font-size:1em;left:0;margin:0;padding:0;position:absolute;visibility:hidden";
+			// 	// Positioning styles help prevent padding/margin/width on `html` or `body` from throwing calculations off.
+			// 	pf.lengthEl.style.cssText = "border:0;display:block;font-size:1em;left:0;margin:0;padding:0;position:absolute;visibility:hidden";
 
-		// 		// Add a class, so that everyone knows where this element comes from
-		// 		pf.lengthEl.className = "helper-from-picturefill-js";
-		// 	}
+			// 	// Add a class, so that everyone knows where this element comes from
+			// 	pf.lengthEl.className = "helper-from-picturefill-js";
+			// }
 
-		// 	pf.lengthEl.style.width = "0px";
+			// pf.lengthEl.style.width = "0px";
 
-		// 	pf.lengthEl.style.width = length;
+			// pf.lengthEl.style.width = length;
 
-		// 	doc.body.appendChild(pf.lengthEl);
+			// doc.body.appendChild(pf.lengthEl);
 
-		// 	cssValue = pf.lengthEl.offsetWidth;
+			// cssValue = pf.lengthEl.offsetWidth;
 
-		// 	if ( cssValue <= 0 ) {
-		// 		cssValue = false;
-		// 	}
+			// if ( cssValue <= 0 ) {
+			// 	cssValue = false;
+			// }
 
-		// 	doc.body.removeChild( pf.lengthEl );
+			// doc.body.removeChild( pf.lengthEl );
 
-		// 	return cssValue;
-		// };
+			// return cssValue;
+
+			length = length.replace( "vw", "%" );
+			if ( length.indexOf( "%" ) > -1 ) {
+				length = pf.viewportWidth * parseInt(length, 10) * 0.01;
+			} else {
+				length = parseInt(length, 10);
+			}
+
+			return length;
+		};
 
 		// pf.detectTypeSupport = function( type, typeUri ) {
 		//     // based on Modernizr's lossless img-webp test
@@ -266,7 +276,7 @@ define( [
 			}
 
 			//if we have no winningLength fallback to 100vw
-			return winningLength || Math.max(w.innerWidth || 0, doc.documentElement.clientWidth);
+			return winningLength || pf.viewportWidth;
 		};
 
 		pf.parseSrcset = function( srcset ) {
@@ -429,40 +439,41 @@ define( [
 		// 	}
 		// };
 
-		pf.setIntrinsicSize = (function() {
-			var urlCache = {};
-			var setSize = function( picImg, width, res ) {
-				fastdom.write( function() {
-					picImg.setAttribute( "width", parseInt(width / res, 10) );
-				});
-			};
-			return function( picImg, bestCandidate ) {
-				var img;
-				if ( !picImg[ pf.ns ] ) {
-					return;
-				}
-				if ( picImg[ pf.ns ].dims === undefined ) {
-					picImg[ pf.ns].dims = picImg.getAttribute("width") || picImg.getAttribute("height");
-				}
-				if ( picImg[ pf.ns].dims ) { return; }
+		// pf.setIntrinsicSize = (function() {
+		// 	var urlCache = {};
+		// 	// var setSize = function( picImg, width, res ) {
+		// 	// 	fastdom.write( function() {
+		// 	// 		picImg.setAttribute( "width", parseInt(width / res, 10) );
+		// 	// 	});
+		// 	// };
+		// 	return function( picImg, bestCandidate ) {
+		// 		var img;
+		// 		if ( !picImg[ pf.ns ] ) {
+		// 			return;
+		// 		}
+		// 		if ( picImg[ pf.ns ].dims === undefined ) {
+		// 			picImg[ pf.ns].dims = picImg.getAttribute("width") || picImg.getAttribute("height");
+		// 		}
+		// 		if ( picImg[ pf.ns].dims ) { return; }
 
-				if ( urlCache[bestCandidate.url] ) {
-					setSize( picImg, urlCache[bestCandidate.url], bestCandidate.resolution );
-				} else {
-					img = doc.createElement( "img" );
-					img.onload = function() {
-						urlCache[bestCandidate.url] = img.width;
-						if ( picImg.src === bestCandidate.url ) {
-							setSize( picImg, urlCache[bestCandidate.url], bestCandidate.resolution );
-						}
-						picImg = null;
-						img.onload = null;
-						img = null;
-					};
-					img.src = bestCandidate.url;
-				}
-			};
-		})();
+		// 		// if ( urlCache[bestCandidate.url] ) {
+		// 		if ( !urlCache[bestCandidate.url] ) {
+		// 		// 	setSize( picImg, urlCache[bestCandidate.url], bestCandidate.resolution );
+		// 		// } else {
+		// 			img = doc.createElement( "img" );
+		// 			img.onload = function() {
+		// 				urlCache[bestCandidate.url] = img.width;
+		// 				// if ( picImg.src === bestCandidate.url ) {
+		// 				// 	setSize( picImg, urlCache[bestCandidate.url], bestCandidate.resolution );
+		// 				// }
+		// 				picImg = null;
+		// 				img.onload = null;
+		// 				img = null;
+		// 			};
+		// 			img.src = bestCandidate.url;
+		// 		}
+		// 	};
+		// })();
 
 		pf.applyBestCandidate = function( candidates, picImg ) {
 			var candidate,
@@ -507,7 +518,7 @@ define( [
 					// }
 				}
 
-				pf.setIntrinsicSize(picImg, bestCandidate);
+				// pf.setIntrinsicSize(picImg, bestCandidate);
 			}
 		};
 
