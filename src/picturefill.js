@@ -72,9 +72,9 @@ define( [
 		/**
 		 * Shortcut method for https://w3c.github.io/webappsec/specs/mixedcontent/#restricts-mixed-content ( for easy overriding in tests )
 		 */
-		pf.restrictsMixedContent = function() {
-			return w.location.protocol === "https:";
-		};
+		// pf.restrictsMixedContent = function() {
+		// 	return w.location.protocol === "https:";
+		// };
 		/**
 		 * Shortcut method for matchMedia ( for easy overriding in tests )
 		 */
@@ -438,11 +438,11 @@ define( [
 				bestCandidate.url = pf.makeUrl( bestCandidate.url );
 
 				if ( picImg.src !== bestCandidate.url ) {
-					if ( pf.restrictsMixedContent() && bestCandidate.url.substr(0, "http:".length).toLowerCase() === "http:" ) {
-						if ( window.console !== undefined ) {
-							console.warn( "Blocked mixed content image " + bestCandidate.url );
-						}
-					} else {
+					// if ( pf.restrictsMixedContent() && bestCandidate.url.substr(0, "http:".length).toLowerCase() === "http:" ) {
+					// 	if ( window.console !== undefined ) {
+					// 		console.warn( "Blocked mixed content image " + bestCandidate.url );
+					// 	}
+					// } else {
 						// picImg.src = bestCandidate.url;
 						// // currentSrc attribute and property to match
 						// // http://picture.responsiveimages.org/#the-img-element
@@ -454,8 +454,8 @@ define( [
 							picImg.currentSrc = picImg.src;
 						});
 
-					}
 						// pf.backfaceVisibilityFix( picImg );
+					// }
 				}
 
 				pf.setIntrinsicSize(picImg, bestCandidate);
