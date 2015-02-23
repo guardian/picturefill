@@ -365,34 +365,20 @@ define( [
 			return candidates;
 		};
 
-		pf.backfaceVisibilityFix = function( picImg ) {
-			// See: https://github.com/scottjehl/picturefill/issues/332
-			// var style = picImg.style || {},
-			//     WebkitBackfaceVisibility = "webkitBackfaceVisibility" in style,
-			//     currentZoom = style.zoom;
-			var style = picImg.style || {},
-				WebkitBackfaceVisibility = "webkitBackfaceVisibility" in style,
-				currentZoom = style.zoom,
-				width;
+		// pf.backfaceVisibilityFix = function( picImg ) {
+		// 	// See: https://github.com/scottjehl/picturefill/issues/332
+		// 	var style = picImg.style || {},
+		// 		WebkitBackfaceVisibility = "webkitBackfaceVisibility" in style,
+		// 		currentZoom = style.zoom;
 
-			if ( WebkitBackfaceVisibility ) {
+		// 	if (WebkitBackfaceVisibility) {
+		// 		style.zoom = ".999";
 
-				// style.zoom = ".999";
+		// 		WebkitBackfaceVisibility = picImg.offsetWidth;
 
-				// WebkitBackfaceVisibility = picImg.offsetWidth;
-
-				// style.zoom = currentZoom;
-				fastdom.read( function() {
-					width = picImg.offsetWidth;
-				});
-
-				fastdom.write( function() {
-					style.zoom = ".999";
-					WebkitBackfaceVisibility = width;
-					style.zoom = currentZoom;
-				});
-			}
-		};
+		// 		style.zoom = currentZoom;
+		// 	}
+		// };
 
 		pf.setIntrinsicSize = (function() {
 			var urlCache = {};
@@ -468,8 +454,8 @@ define( [
 							picImg.currentSrc = picImg.src;
 						});
 
-						pf.backfaceVisibilityFix( picImg );
 					}
+						// pf.backfaceVisibilityFix( picImg );
 				}
 
 				pf.setIntrinsicSize(picImg, bestCandidate);
