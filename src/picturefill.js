@@ -380,40 +380,41 @@ define( [
 		// 	}
 		// };
 
-		pf.setIntrinsicSize = (function() {
-			var urlCache = {};
-			var setSize = function( picImg, width, res ) {
-				fastdom.write( function() {
-					picImg.setAttribute( "width", parseInt(width / res, 10) );
-				});
-			};
-			return function( picImg, bestCandidate ) {
-				var img;
-				if ( !picImg[ pf.ns ] ) {
-					return;
-				}
-				if ( picImg[ pf.ns ].dims === undefined ) {
-					picImg[ pf.ns].dims = picImg.getAttribute("width") || picImg.getAttribute("height");
-				}
-				if ( picImg[ pf.ns].dims ) { return; }
+		// pf.setIntrinsicSize = (function() {
+		// 	var urlCache = {};
+		// 	// var setSize = function( picImg, width, res ) {
+		// 	// 	fastdom.write( function() {
+		// 	// 		picImg.setAttribute( "width", parseInt(width / res, 10) );
+		// 	// 	});
+		// 	// };
+		// 	return function( picImg, bestCandidate ) {
+		// 		var img;
+		// 		if ( !picImg[ pf.ns ] ) {
+		// 			return;
+		// 		}
+		// 		if ( picImg[ pf.ns ].dims === undefined ) {
+		// 			picImg[ pf.ns].dims = picImg.getAttribute("width") || picImg.getAttribute("height");
+		// 		}
+		// 		if ( picImg[ pf.ns].dims ) { return; }
 
-				if ( urlCache[bestCandidate.url] ) {
-					setSize( picImg, urlCache[bestCandidate.url], bestCandidate.resolution );
-				} else {
-					img = doc.createElement( "img" );
-					img.onload = function() {
-						urlCache[bestCandidate.url] = img.width;
-						if ( picImg.src === bestCandidate.url ) {
-							setSize( picImg, urlCache[bestCandidate.url], bestCandidate.resolution );
-						}
-						picImg = null;
-						img.onload = null;
-						img = null;
-					};
-					img.src = bestCandidate.url;
-				}
-			};
-		})();
+		// 		// if ( urlCache[bestCandidate.url] ) {
+		// 		if ( !urlCache[bestCandidate.url] ) {
+		// 		// 	setSize( picImg, urlCache[bestCandidate.url], bestCandidate.resolution );
+		// 		// } else {
+		// 			img = doc.createElement( "img" );
+		// 			img.onload = function() {
+		// 				urlCache[bestCandidate.url] = img.width;
+		// 				// if ( picImg.src === bestCandidate.url ) {
+		// 				// 	setSize( picImg, urlCache[bestCandidate.url], bestCandidate.resolution );
+		// 				// }
+		// 				picImg = null;
+		// 				img.onload = null;
+		// 				img = null;
+		// 			};
+		// 			img.src = bestCandidate.url;
+		// 		}
+		// 	};
+		// })();
 
 		pf.applyBestCandidate = function( candidates, picImg ) {
 			var candidate,
@@ -458,7 +459,7 @@ define( [
 					// }
 				}
 
-				pf.setIntrinsicSize(picImg, bestCandidate);
+				// pf.setIntrinsicSize(picImg, bestCandidate);
 			}
 		};
 
