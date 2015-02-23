@@ -137,51 +137,51 @@ define( [
 			return cssValue;
 		};
 
-	    pf.detectTypeSupport = function( type, typeUri ) {
-	        // based on Modernizr's lossless img-webp test
-	        // note: asynchronous
-	        var image = new w.Image();
-	        image.onerror = function() {
-	            pf.types[ type ] = false;
-	            picturefill();
-	        };
-	        image.onload = function() {
-	            pf.types[ type ] = image.width === 1;
-	            picturefill();
-	        };
-	        image.src = typeUri;
+		// pf.detectTypeSupport = function( type, typeUri ) {
+		//     // based on Modernizr's lossless img-webp test
+		//     // note: asynchronous
+		//     var image = new w.Image();
+		//     image.onerror = function() {
+		//         pf.types[ type ] = false;
+		//         picturefill();
+		//     };
+		//     image.onload = function() {
+		//         pf.types[ type ] = image.width === 1;
+		//         picturefill();
+		//     };
+		//     image.src = typeUri;
 
-	        return "pending";
-	    };
-		// container of supported mime types that one might need to qualify before using
-		pf.types = pf.types || {};
+		//     return "pending";
+		// };
+		// // container of supported mime types that one might need to qualify before using
+		// pf.types = pf.types || {};
 
-		// Add support for standard mime types
-		pf.types[ "image/jpeg" ] = true;
-		pf.types[ "image/gif" ] = true;
-		pf.types[ "image/png" ] = true;
-		pf.types[ "image/svg+xml" ] = doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image", "1.1");
-		pf.types[ "image/webp" ] = pf.detectTypeSupport("image/webp", "data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=");
+		// // Add support for standard mime types
+		// pf.types[ "image/jpeg" ] = true;
+		// pf.types[ "image/gif" ] = true;
+		// pf.types[ "image/png" ] = true;
+		// pf.types[ "image/svg+xml" ] = doc.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#Image", "1.1");
+		// pf.types[ "image/webp" ] = pf.detectTypeSupport("image/webp", "data:image/webp;base64,UklGRh4AAABXRUJQVlA4TBEAAAAvAAAAAAfQ//73v/+BiOh/AAA=");
 
-		pf.verifyTypeSupport = function( source ) {
-			var type = source.getAttribute( "type" );
-			// if type attribute exists, return test result, otherwise return true
-			if ( type === null || type === "" ) {
-				return true;
-			} else {
-					var pfType = pf.types[ type ];
-				// if the type test is a function, run it and return "pending" status. The function will rerun picturefill on pending elements once finished.
-				if ( typeof pfType === "string" && pfType !== "pending") {
-					pf.types[ type ] = pf.detectTypeSupport( type, pfType );
-					return "pending";
-				} else if ( typeof pfType === "function" ) {
-					pfType();
-					return "pending";
-				} else {
-					return pfType;
-				}
-			}
-		};
+		// pf.verifyTypeSupport = function( source ) {
+		// 	var type = source.getAttribute( "type" );
+		// 	// if type attribute exists, return test result, otherwise return true
+		// 	if ( type === null || type === "" ) {
+		// 		return true;
+		// 	} else {
+		// 			var pfType = pf.types[ type ];
+		// 		// if the type test is a function, run it and return "pending" status. The function will rerun picturefill on pending elements once finished.
+		// 		if ( typeof pfType === "string" && pfType !== "pending") {
+		// 			pf.types[ type ] = pf.detectTypeSupport( type, pfType );
+		// 			return "pending";
+		// 		} else if ( typeof pfType === "function" ) {
+		// 			pfType();
+		// 			return "pending";
+		// 		} else {
+		// 			return pfType;
+		// 		}
+		// 	}
+		// };
 
 		// Parses an individual `size` and returns the length, and optional media query
 		pf.parseSize = function( sourceSizeStr ) {
@@ -531,56 +531,56 @@ define( [
 			return elems;
 		};
 
-		pf.getMatch = function( img, picture ) {
-			var sources = picture.childNodes,
-				match;
+		// pf.getMatch = function( img, picture ) {
+		// 	var sources = picture.childNodes,
+		// 		match;
 
-			// Go through each child, and if they have media queries, evaluate them
-			for ( var j = 0, slen = sources.length; j < slen; j++ ) {
-				var source = sources[ j ];
+		// 	// Go through each child, and if they have media queries, evaluate them
+		// 	for ( var j = 0, slen = sources.length; j < slen; j++ ) {
+		// 		var source = sources[ j ];
 
-				// ignore non-element nodes
-				if ( source.nodeType !== 1 ) {
-					continue;
-				}
+		// 		// ignore non-element nodes
+		// 		if ( source.nodeType !== 1 ) {
+		// 			continue;
+		// 		}
 
-				// Hitting the `img` element that started everything stops the search for `sources`.
-				// If no previous `source` matches, the `img` itself is evaluated later.
-				if ( source === img ) {
-					return match;
-				}
+		// 		// Hitting the `img` element that started everything stops the search for `sources`.
+		// 		// If no previous `source` matches, the `img` itself is evaluated later.
+		// 		if ( source === img ) {
+		// 			return match;
+		// 		}
 
-				// ignore non-`source` nodes
-				if ( source.nodeName.toUpperCase() !== "SOURCE" ) {
-					continue;
-				}
-				// if it's a source element that has the `src` property set, throw a warning in the console
-				if ( source.getAttribute( "src" ) !== null && typeof console !== undefined ) {
-					console.warn("The `src` attribute is invalid on `picture` `source` element; instead, use `srcset`.");
-				}
+		// 		// ignore non-`source` nodes
+		// 		if ( source.nodeName.toUpperCase() !== "SOURCE" ) {
+		// 			continue;
+		// 		}
+		// 		// if it's a source element that has the `src` property set, throw a warning in the console
+		// 		if ( source.getAttribute( "src" ) !== null && typeof console !== undefined ) {
+		// 			console.warn("The `src` attribute is invalid on `picture` `source` element; instead, use `srcset`.");
+		// 		}
 
-				var media = source.getAttribute( "media" );
+		// 		var media = source.getAttribute( "media" );
 
-				// if source does not have a srcset attribute, skip
-				if ( !source.getAttribute( "srcset" ) ) {
-					continue;
-				}
+		// 		// if source does not have a srcset attribute, skip
+		// 		if ( !source.getAttribute( "srcset" ) ) {
+		// 			continue;
+		// 		}
 
-				// if there's no media specified, OR w.matchMedia is supported
-				if ( ( !media || pf.matchesMedia( media ) ) ) {
-					var typeSupported = pf.verifyTypeSupport( source );
+		// 		// if there's no media specified, OR w.matchMedia is supported
+		// 		if ( ( !media || pf.matchesMedia( media ) ) ) {
+		// 			var typeSupported = pf.verifyTypeSupport( source );
 
-					if ( typeSupported === true ) {
-						match = source;
-						break;
-					} else if ( typeSupported === "pending" ) {
-						return false;
-					}
-				}
-			}
+		// 			if ( typeSupported === true ) {
+		// 				match = source;
+		// 				break;
+		// 			} else if ( typeSupported === "pending" ) {
+		// 				return false;
+		// 			}
+		// 		}
+		// 	}
 
-			return match;
-		};
+		// 	return match;
+		// };
 
 		pf.getBrowserWidth = function() {
 			return window.innerWidth || document.documentElement.clientWidth || 0;
