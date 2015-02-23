@@ -92,12 +92,11 @@ define( [
 		 * Get width in css pixel value from a "length" value
 		 * http://dev.w3.org/csswg/css-values-3/#length-value
 		 */
-        pf.viewport = Math.max(w.innerWidth || 0, doc.documentElement.clientWidth);
+		pf.viewportWidth = Math.max(w.innerWidth || 0, doc.documentElement.clientWidth);
 		pf.getWidthFromLength = function( length ) {
 			// var cssValue;
 			// // If a length is specified and doesn’t contain a percentage, and it is greater than 0 or using `calc`, use it. Else, use the `100vw` default.
 			// length = length && length.indexOf( "%" ) > -1 === false && ( parseFloat( length ) > 0 || length.indexOf( "calc(" ) > -1 ) ? length : "100vw";
-			length = length && length.indexOf( "%" ) > -1 === false && ( parseFloat( length ) > 0 || length.indexOf( "calc(" ) > -1 ) ? length : pf.viewport * length;
 
 			// /**
 			//  * If length is specified in  `vw` units, use `%` instead since the div we’re measuring
@@ -133,6 +132,14 @@ define( [
 			// doc.body.removeChild( pf.lengthEl );
 
 			// return cssValue;
+
+			length = length.replace( "vw", "%" );
+			if ( length.indexOf( "%" ) > -1 ) {
+				length = pf.viewportWidth * parseInt(length, 10) * 0.01;
+			} else {
+				length = parseInt(length, 10);
+			}
+
 			return length;
 		};
 
@@ -220,7 +227,7 @@ define( [
 			}
 
 			//if we have no winningLength fallback to 100vw
-			return winningLength || Math.max(w.innerWidth || 0, doc.documentElement.clientWidth);
+			return winningLength || pf.viewportWidth;
 		};
 
 		pf.parseSrcset = function( srcset ) {
