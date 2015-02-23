@@ -92,7 +92,6 @@ define( [
 		 * Get width in css pixel value from a "length" value
 		 * http://dev.w3.org/csswg/css-values-3/#length-value
 		 */
-		pf.viewportWidth = Math.max(w.innerWidth || 0, doc.documentElement.clientWidth);
 		pf.getWidthFromLength = function( length ) {
 			// var cssValue;
 			// // If a length is specified and doesn’t contain a percentage, and it is greater than 0 or using `calc`, use it. Else, use the `100vw` default.
@@ -592,74 +591,78 @@ define( [
 
 			// w._browserWidth = pf.getBrowserWidth();
 
-			// Loop through all elements
-			for ( var i = 0, plen = elements.length; i < plen; i++ ) {
-				element = elements[ i ];
-				parent = element.parentNode;
-				firstMatch = undefined;
-				candidates = undefined;
+			fastdom.read(function() {
+				pf.viewportWidth = Math.max(w.innerWidth || 0, doc.documentElement.clientWidth);
 
-				// immediately skip non-`img` nodes
-				if ( element.nodeName.toUpperCase() !== "IMG" ) {
-					continue;
-				}
+				// Loop through all elements
+				for ( var i = 0, plen = elements.length; i < plen; i++ ) {
+					element = elements[ i ];
+					parent = element.parentNode;
+					firstMatch = undefined;
+					candidates = undefined;
 
-				// expando for caching data on the img
-				if ( !element[ pf.ns ] ) {
-					element[ pf.ns ] = {};
-				}
+					// immediately skip non-`img` nodes
+					if ( element.nodeName.toUpperCase() !== "IMG" ) {
+						continue;
+					}
 
-				// if the element has already been evaluated, skip it unless
-				// `options.reevaluate` is set to true ( this, for example,
-				// is set to true when running `picturefill` on `resize` ).
-				if ( !options.reevaluate && element[ pf.ns ].evaluated ) {
-					continue;
-				}
+					// expando for caching data on the img
+					if ( !element[ pf.ns ] ) {
+						element[ pf.ns ] = {};
+					}
 
-				// // if `img` is in a `picture` element
-				// if ( parent && parent.nodeName.toUpperCase() === "PICTURE" ) {
+					// if the element has already been evaluated, skip it unless
+					// `options.reevaluate` is set to true ( this, for example,
+					// is set to true when running `picturefill` on `resize` ).
+					if ( !options.reevaluate && element[ pf.ns ].evaluated ) {
+						continue;
+					}
 
-				// 	// IE9 video workaround
-				// 	pf.removeVideoShim( parent );
+					// // if `img` is in a `picture` element
+					// if ( parent && parent.nodeName.toUpperCase() === "PICTURE" ) {
 
-				// 	// return the first match which might undefined
-				// 	// returns false if there is a pending source
-				// 	// TODO the return type here is brutal, cleanup
-				// 	firstMatch = pf.getMatch( element, parent );
+					// 	// IE9 video workaround
+					// 	pf.removeVideoShim( parent );
 
-				// 	// if any sources are pending in this picture due to async type test(s)
-				// 	// remove the evaluated attr and skip for now ( the pending test will
-				// 	// rerun picturefill on this element when complete)
-				// 	if ( firstMatch === false ) {
-				// 		continue;
-				// 	}
-				// } else {
-				// 	firstMatch = undefined;
-				// }
+					// 	// return the first match which might undefined
+					// 	// returns false if there is a pending source
+					// 	// TODO the return type here is brutal, cleanup
+					// 	firstMatch = pf.getMatch( element, parent );
 
-				// Cache and remove `srcset` if present and we’re going to be doing `picture`/`srcset`/`sizes` polyfilling to it.
-				// if ( ( parent && parent.nodeName.toUpperCase() === "PICTURE" ) ||
-				// ( !pf.sizesSupported && ( element.srcset && regWDesc.test( element.srcset ) ) ) ) {
-				if ( !pf.sizesSupported && ( element.srcset && regWDesc.test( element.srcset ) ) ) {
-					pf.dodgeSrcset( element );
-				}
+					// 	// if any sources are pending in this picture due to async type test(s)
+					// 	// remove the evaluated attr and skip for now ( the pending test will
+					// 	// rerun picturefill on this element when complete)
+					// 	if ( firstMatch === false ) {
+					// 		continue;
+					// 	}
+					// } else {
+					// 	firstMatch = undefined;
+					// }
 
-				if ( firstMatch ) {
-					candidates = pf.processSourceSet( firstMatch );
-					pf.applyBestCandidate( candidates, element );
-				} else {
-					// No sources matched, so we’re down to processing the inner `img` as a source.
-					candidates = pf.processSourceSet( element );
+					// Cache and remove `srcset` if present and we’re going to be doing `picture`/`srcset`/`sizes` polyfilling to it.
+					// if ( ( parent && parent.nodeName.toUpperCase() === "PICTURE" ) ||
+					// ( !pf.sizesSupported && ( element.srcset && regWDesc.test( element.srcset ) ) ) ) {
+					if ( !pf.sizesSupported && ( element.srcset && regWDesc.test( element.srcset ) ) ) {
+						pf.dodgeSrcset( element );
+					}
 
-					if ( element.srcset === undefined || element[ pf.ns ].srcset ) {
-						// Either `srcset` is completely unsupported, or we need to polyfill `sizes` functionality.
+					if ( firstMatch ) {
+						candidates = pf.processSourceSet( firstMatch );
 						pf.applyBestCandidate( candidates, element );
-					} // Else, resolution-only `srcset` is supported natively.
-				}
+					} else {
+						// No sources matched, so we’re down to processing the inner `img` as a source.
+						candidates = pf.processSourceSet( element );
 
-				// set evaluated to true to avoid unnecessary reparsing
-				element[ pf.ns ].evaluated = true;
-			}
+						if ( element.srcset === undefined || element[ pf.ns ].srcset ) {
+							// Either `srcset` is completely unsupported, or we need to polyfill `sizes` functionality.
+							pf.applyBestCandidate( candidates, element );
+						} // Else, resolution-only `srcset` is supported natively.
+					}
+
+					// set evaluated to true to avoid unnecessary reparsing
+					element[ pf.ns ].evaluated = true;
+				}
+			});
 		}
 
 		/**

@@ -580,7 +580,12 @@ define([ "../src/picturefill", "fastdom" ], function(picturefill, fastdom) {
 
 			picturefill({ reevaluate: false, elements: [ mockPicture ] });
 
-			ok( mockPicture[ pf.ns ].evaluated );
+			stop();
+			fastdom.defer(2, function() {
+				ok( mockPicture[ pf.ns ].evaluated );
+			    start();
+			});
+
 		});
 
 		test( "`img` with `sizes` but no `srcset` shouldn’t fail silently", function() {
