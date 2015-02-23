@@ -656,39 +656,39 @@ define( [
 		 * the polyfill every 250ms until the document is ready.
 		 * Also attaches picturefill on resize
 		 */
-		function runPicturefill() {
-			picturefill();
-			var intervalId = setInterval( function() {
-				// When the document has finished loading, stop checking for new images
-				// https://github.com/ded/domready/blob/master/ready.js#L15
-				picturefill();
+		// function runPicturefill() {
+		// 	picturefill();
+		// 	var intervalId = setInterval( function() {
+		// 		// When the document has finished loading, stop checking for new images
+		// 		// https://github.com/ded/domready/blob/master/ready.js#L15
+		// 		picturefill();
 
-				if ( /^loaded|^i|^c/.test( doc.readyState ) ) {
-					clearInterval( intervalId );
-					return;
-				}
-			}, 250 );
+		// 		if ( /^loaded|^i|^c/.test( doc.readyState ) ) {
+		// 			clearInterval( intervalId );
+		// 			return;
+		// 		}
+		// 	}, 250 );
 
-			// ignore resize events
-			// function checkResize() {
-			// 	var resizeThrottle;
+		// 	ignore resize events
+		// 	function checkResize() {
+		// 		var resizeThrottle;
 
-			// 	if (!w._picturefillWorking && pf.getBrowserWidth() !== w._browserWidth) {
-			// 		w._picturefillWorking = true;
-			// 		w.clearTimeout( resizeThrottle );
-			// 		resizeThrottle = w.setTimeout( function() {
-			// 			picturefill({ reevaluate: true });
-			// 			w._picturefillWorking = false;
-			// 		}, 250 );
-			// 	}
-			// }
+		// 		if (!w._picturefillWorking && pf.getBrowserWidth() !== w._browserWidth) {
+		// 			w._picturefillWorking = true;
+		// 			w.clearTimeout( resizeThrottle );
+		// 			resizeThrottle = w.setTimeout( function() {
+		// 				picturefill({ reevaluate: true });
+		// 				w._picturefillWorking = false;
+		// 			}, 250 );
+		// 		}
+		// 	}
 
-			// if ( w.addEventListener ) {
-			// 	w.addEventListener( "resize", checkResize, false );
-			// } else if ( w.attachEvent ) {
-			// 	w.attachEvent( "onresize", checkResize );
-			// }
-		}
+		// 	if ( w.addEventListener ) {
+		// 		w.addEventListener( "resize", checkResize, false );
+		// 	} else if ( w.attachEvent ) {
+		// 		w.attachEvent( "onresize", checkResize );
+		// 	}
+		// }
 
 		// runPicturefill();
 
