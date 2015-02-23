@@ -31,11 +31,7 @@ define( [
 		// If picture is supported, well, that's awesome. Let's get outta here...
 		if ( w.HTMLPictureElement ) {
 			// return expose(function() {});
-			return {
-				init: function() {},
-				_: {}, // for testing
-				picturefill: function() {} // for testing
-	        };
+			return function() {};
 		}
 
 		// HTML shim|v it for old IE (IE9 will still need the HTML video tag workaround)
@@ -710,14 +706,10 @@ define( [
 		// runPicturefill();
 
 		/* expose methods for testing */
-		// picturefill._ = pf;
+		picturefill._ = pf;
 
 		// expose(picturefill);
-        return {
-			init: runPicturefill,
-			_: pf, // for testing
-			picturefill: picturefill // for testing
-        };
+        return picturefill;
 
 	} )( window, window.document, new window.Image() );
 } );
