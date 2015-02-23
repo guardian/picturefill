@@ -486,26 +486,26 @@ define( [
 		 * and must account for that here by moving those source elements
 		 * back into the picture element.
 		 */
-		pf.removeVideoShim = function( picture ) {
-			var videos = picture.getElementsByTagName( "video" );
-			if ( videos.length ) {
-				var video = videos[ 0 ],
-					// vsources = video.getElementsByTagName( "source" );
-					vsources = video.getElementsByTagName( "source" ),
-					insert = function( vsource ) {
-						picture.insertBefore( vsource, video );
-					};
-				while ( vsources.length ) {
-					// picture.insertBefore( vsources[ 0 ], video );
-					fastdom.write( insert( vsources[ 0 ] ) );
-				}
-				// Remove the video element once we're finished removing its children
-				// video.parentNode.removeChild( video );
-				fastdom.write(function() {
-					video.parentNode.removeChild( video );
-				});
-			}
-		};
+		// pf.removeVideoShim = function( picture ) {
+		// 	var videos = picture.getElementsByTagName( "video" );
+		// 	if ( videos.length ) {
+		// 		var video = videos[ 0 ],
+		// 			// vsources = video.getElementsByTagName( "source" );
+		// 			vsources = video.getElementsByTagName( "source" ),
+		// 			insert = function( vsource ) {
+		// 				picture.insertBefore( vsource, video );
+		// 			};
+		// 		while ( vsources.length ) {
+		// 			// picture.insertBefore( vsources[ 0 ], video );
+		// 			fastdom.write( insert( vsources[ 0 ] ) );
+		// 		}
+		// 		// Remove the video element once we're finished removing its children
+		// 		// video.parentNode.removeChild( video );
+		// 		fastdom.write(function() {
+		// 			video.parentNode.removeChild( video );
+		// 		});
+		// 	}
+		// };
 
 		/**
 		 * Find all `img` elements, and add them to the candidate list if they have
