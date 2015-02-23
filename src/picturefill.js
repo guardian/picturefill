@@ -576,9 +576,9 @@ define( [
 		// 	return match;
 		// };
 
-		pf.getBrowserWidth = function() {
-			return window.innerWidth || document.documentElement.clientWidth || 0;
-		};
+		// pf.getBrowserWidth = function() {
+		// 	return window.innerWidth || document.documentElement.clientWidth || 0;
+		// };
 
 		function picturefill( opt ) {
 			var elements,
@@ -590,7 +590,7 @@ define( [
 
 			elements = options.elements || pf.getAllElements();
 
-			w._browserWidth = pf.getBrowserWidth();
+			// w._browserWidth = pf.getBrowserWidth();
 
 			// Loop through all elements
 			for ( var i = 0, plen = elements.length; i < plen; i++ ) {
