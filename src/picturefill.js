@@ -219,8 +219,7 @@ define( [
 				if ( (!media || pf.matchesMedia( media )) &&
 					// pass the length to a method that can properly determine length
 					// in pixels based on these formats: http://dev.w3.org/csswg/css-values-3/#length-value
-					// (winningLength = pf.getWidthFromLength( length )) ) {
-					(winningLength = parseInt( length, 10)) ) {
+					(winningLength = pf.getWidthFromLength( length )) ) {
 					break;
 				}
 			}
