@@ -1,4 +1,4 @@
-/*! Picturefill - v2.3.0-beta - 2015-02-23
+/*! Picturefill - v2.3.0-beta - 2015-02-24
 * http://scottjehl.github.io/picturefill
 * Copyright (c) 2015 https://github.com/scottjehl/picturefill/blob/master/Authors.txt; Licensed MIT */
 /*! matchMedia() polyfill - Test a CSS media type/query in JS. Authors & copyright (c) 2012: Scott Jehl, Paul Irish, Nicholas Zakas, David Knight. Dual MIT/BSD license */
@@ -268,8 +268,7 @@ define( [
 				if ( (!media || pf.matchesMedia( media )) &&
 					// pass the length to a method that can properly determine length
 					// in pixels based on these formats: http://dev.w3.org/csswg/css-values-3/#length-value
-					// (winningLength = pf.getWidthFromLength( length )) ) {
-					(winningLength = parseInt( length, 10)) ) {
+					(winningLength = pf.getWidthFromLength( length )) ) {
 					break;
 				}
 			}
@@ -491,6 +490,14 @@ define( [
 					break;
 				}
 			}
+
+			// IE8 & below don't do mediaquieries, so the polyfill fails.
+            // Just serve it the highest res there is.
+            /*@cc_on
+                @if( @_jscript_version <= 5.8 )
+                    bestCandidate = candidates[ length - 1 ];
+                @end
+            @*/
 
 			if ( bestCandidate ) {
 
