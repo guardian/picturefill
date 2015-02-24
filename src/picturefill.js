@@ -442,6 +442,14 @@ define( [
 				}
 			}
 
+			// IE8 & below don't do mediaquieries, so the polyfill fails.
+            // Just serve it the highest res there is.
+            /*@cc_on
+                @if( @_jscript_version <= 5.8 )
+                    bestCandidate = candidates[ length - 1 ];
+                @end
+            @*/
+
 			if ( bestCandidate ) {
 
 				bestCandidate.url = pf.makeUrl( bestCandidate.url );
