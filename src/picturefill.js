@@ -75,11 +75,17 @@ define( [
 		// pf.restrictsMixedContent = function() {
 		// 	return w.location.protocol === "https:";
 		// };
+
 		/**
 		 * Shortcut method for matchMedia ( for easy overriding in tests )
 		 */
+		// IE8 and below can't be polyfilled
+		pf.canMatchMedia = w.matchMedia && w.matchMedia("(min-width: 0px)").matches;
 
 		pf.matchesMedia = function( media ) {
+			if ( !pf.canMatchMedia ) {
+				return true;
+			}
 			return w.matchMedia && w.matchMedia( media ).matches;
 		};
 
@@ -441,14 +447,6 @@ define( [
 					break;
 				}
 			}
-
-			// IE8 & below don't do mediaquieries, so the polyfill fails.
-            // Just serve it the highest res there is.
-            /*@cc_on
-                @if( @_jscript_version <= 5.8 )
-                    bestCandidate = candidates[ length - 1 ];
-                @end
-            @*/
 
 			if ( bestCandidate ) {
 

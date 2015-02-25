@@ -1,4 +1,4 @@
-/*! Picturefill - v2.3.0-beta - 2015-02-24
+/*! Picturefill - v2.3.0-beta - 2015-02-25
 * http://scottjehl.github.io/picturefill
 * Copyright (c) 2015 https://github.com/scottjehl/picturefill/blob/master/Authors.txt; Licensed MIT */
 /*! matchMedia() polyfill - Test a CSS media type/query in JS. Authors & copyright (c) 2012: Scott Jehl, Paul Irish, Nicholas Zakas, David Knight. Dual MIT/BSD license */
@@ -124,11 +124,17 @@ define( [
 		// pf.restrictsMixedContent = function() {
 		// 	return w.location.protocol === "https:";
 		// };
+
 		/**
 		 * Shortcut method for matchMedia ( for easy overriding in tests )
 		 */
+		// IE8 and below can't be polyfilled
+		pf.canMatchMedia = w.matchMedia && w.matchMedia("(min-width: 0px)").matches;
 
 		pf.matchesMedia = function( media ) {
+			if ( !pf.canMatchMedia ) {
+				return true;
+			}
 			return w.matchMedia && w.matchMedia( media ).matches;
 		};
 
@@ -490,14 +496,6 @@ define( [
 					break;
 				}
 			}
-
-			// IE8 & below don't do mediaquieries, so the polyfill fails.
-            // Just serve it the highest res there is.
-            /*@cc_on
-                @if( @_jscript_version <= 5.8 )
-                    bestCandidate = candidates[ length - 1 ];
-                @end
-            @*/
 
 			if ( bestCandidate ) {
 
